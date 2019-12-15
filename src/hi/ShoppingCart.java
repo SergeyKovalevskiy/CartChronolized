@@ -18,7 +18,7 @@ public class ShoppingCart
         cart.addItem("Banana", 20.00, 4, Type.SECOND_FREE);
         cart.addItem("A long piece of toilet paper", 17.20, 1, Type.SALE);
         cart.addItem("Nails", 2.00, 500, Type.REGULAR);
-        System.out.println(cart.formatTicket());
+        System.out.println(cart.formTicket());
     }
     /**
      * Adds new item.
@@ -61,7 +61,7 @@ public class ShoppingCart
      *
      * if no items in cart returns "No items." string.
      */
-    public String formatTicket()
+    public String formTicket()
     {
         if (items.size() == 0)
             return "No items.";
