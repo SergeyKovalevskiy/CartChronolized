@@ -111,14 +111,19 @@ public class ShoppingCart
                 appendFormatted(sb, line[i], align[i], width[i]);
             sb.append("\n");
         }
-        if (lines.size() > 0) {
 // separator
+        makeSeparator(lines, lineLength, sb);
+// footer
+        return makeFooterAndFinish(align, footer, width, sb);
+    }
+
+    private void makeSeparator(List<String[]> lines, int lineLength, StringBuilder sb) {
+        if (lines.size() > 0) {
+
             for (int i = 0; i < lineLength; i++)
                 sb.append("-");
             sb.append("\n");
         }
-// footer
-        return makeFooterAndFinish(align, footer, width, sb);
     }
 
     private String makeFooterAndFinish(int[] align, String[] footer, int[] width, StringBuilder sb) {
