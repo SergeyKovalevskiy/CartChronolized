@@ -75,7 +75,7 @@ public class ShoppingCart
                     item.getTitle(),
                     MONEY.format(item.getPrice()),
                     String.valueOf(item.getQuantity()),
-                    (discount == 0) ? "-" : (String.valueOf(discount) + "%"),
+                    printDiscount(discount),
                     MONEY.format(itemTotal)
             });
             total += itemTotal;
@@ -109,6 +109,10 @@ public class ShoppingCart
         }
 // footer
         return makeFooterAndFinish(align, footer, width, sb);
+    }
+
+    private String printDiscount(int discount) {
+        return (discount == 0) ? "-" : (String.valueOf(discount) + "%");
     }
 
     private void adjustWidth(int[] width, String[] line) {
