@@ -85,13 +85,11 @@ public class ShoppingCart
 // formatting table
 // column max length
         int[] width = new int[]{0,0,0,0,0,0};
-        for (String[] line : lines)
-            for (int i = 0; i < line.length; i++)
-                width[i] = (int) Math.max(width[i], line[i].length());
-        for (int i = 0; i < header.length; i++)
-            width[i] = (int) Math.max(width[i], header[i].length());
-        for (int i = 0; i < footer.length; i++)
-            width[i] = (int) Math.max(width[i], footer[i].length());
+        for (String[] line : lines) {
+            adjustWidth(width, line);
+        }
+        adjustWidth(width, header);
+        adjustWidth(width, footer);
 // line length
         int lineLength = width.length - 1;
         for (int w : width)
@@ -105,12 +103,17 @@ public class ShoppingCart
         makeSeparator(lineLength, sb);
 // lines
         makeLines(lines, align, width, sb);
-// separator
+// ending separator
         if (lines.size() > 0) {
             makeSeparator(lineLength, sb);
         }
 // footer
         return makeFooterAndFinish(align, footer, width, sb);
+    }
+
+    private void adjustWidth(int[] width, String[] line) {
+        for (int i = 0; i < line.length; i++)
+            width[i] = (int) Math.max(width[i], line[i].length());
     }
 
     private void makeLines(List<String[]> lines, int[] align, int[] width, StringBuilder sb) {
