@@ -4,11 +4,7 @@ import static hi.ShoppingCart.appendFormatted;
 import static org.junit.Assert.assertEquals;
 
 public class AppendFormattedTest {
-    /**
-     * Appends to sb formatted value.
-     * Trims string if its length > width.
-     * align -1 for align left, 0 for center and +1 for align right.
-     */
+
     @Test
     public void trim(){
         StringBuilder sb=new StringBuilder("a");
