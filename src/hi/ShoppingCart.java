@@ -155,7 +155,7 @@ public class ShoppingCart
     public static void appendFormatted(StringBuilder sb, String value, int align, int width)
     {
         if (value.length() > width)
-            value = value.substring(0,width);
+            value = value.substring(0,width-1);
         int before = (align == 0)
                 ? (width - value.length()) / 2
                 : (align == -1) ? 0 : width - value.length();
