@@ -38,11 +38,7 @@ public class ShoppingCart
             throw new IllegalArgumentException("Illegal price");
         if (quantity <= 0)
             throw new IllegalArgumentException("Illegal quantity");
-        Item item = new Item();
-        item.setTitle(title);
-        item.setPrice(price);
-        item.setQuantity(quantity);
-        item.setType(type);
+        Item item = new Item(title,price,quantity,type);
         items.add(item);
     }
     /**
