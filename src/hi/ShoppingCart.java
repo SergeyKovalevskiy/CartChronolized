@@ -6,7 +6,7 @@ import java.text.*;
  */
 public class ShoppingCart
 {
-    public static enum ItemType { NEW, REGULAR, SECOND_FREE, SALE };
+    public enum ItemType { NEW, REGULAR, SECOND_FREE, SALE };
     /**
      * Tests all class methods.
      */
