@@ -106,15 +106,19 @@ public class ShoppingCart
             sb.append("-");
         sb.append("\n");
 // lines
+        addLines(lines, align, width, sb);
+// separator
+        makeSeparator(lines, lineLength, sb);
+// footer
+        return makeFooterAndFinish(align, footer, width, sb);
+    }
+
+    private void addLines(List<String[]> lines, int[] align, int[] width, StringBuilder sb) {
         for (String[] line : lines) {
             for (int i = 0; i < line.length; i++)
                 appendFormatted(sb, line[i], align[i], width[i]);
             sb.append("\n");
         }
-// separator
-        makeSeparator(lines, lineLength, sb);
-// footer
-        return makeFooterAndFinish(align, footer, width, sb);
     }
 
     private void makeSeparator(List<String[]> lines, int lineLength, StringBuilder sb) {
