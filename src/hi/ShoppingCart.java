@@ -64,9 +64,9 @@ public class ShoppingCart
         List<String[]> lines = new ArrayList<String[]>();
         String[] header = {"#","Item","Price","Quan.","Discount","Total"};
         int[] align = new int[] { 1, -1, 1, 1, 1, 1 };
-// formatting each line
         double total = 0.00;
         int index = 0;
+        // formatting each line
         for (Item item : items) {
             int discount = calculateDiscount(item.getType(), item.getQuantity());
             double itemTotal = item.getPrice() * item.getQuantity() * (100.00 - discount) / 100.00;
@@ -118,10 +118,15 @@ public class ShoppingCart
             sb.append("\n");
         }
 // footer
+        return makeFooterAndFinish(align, footer, width, sb);
+    }
+
+    private String makeFooterAndFinish(int[] align, String[] footer, int[] width, StringBuilder sb) {
         for (int i = 0; i < footer.length; i++)
             appendFormatted(sb, footer[i], align[i], width[i]);
         return sb.toString();
     }
+
     // --- private section -----------------------------------------------------
     private static final NumberFormat MONEY;
     static {
