@@ -102,18 +102,18 @@ public class ShoppingCart
             appendFormatted(sb, header[i], align[i], width[i]);
         sb.append("\n");
 // separator
-        for (int i = 0; i < lineLength; i++)
-            sb.append("-");
-        sb.append("\n");
+        makeSeparator(lineLength, sb);
 // lines
-        addLines(lines, align, width, sb);
+        makeLines(lines, align, width, sb);
 // separator
-        makeSeparator(lines, lineLength, sb);
+        if (lines.size() > 0) {
+            makeSeparator(lineLength, sb);
+        }
 // footer
         return makeFooterAndFinish(align, footer, width, sb);
     }
 
-    private void addLines(List<String[]> lines, int[] align, int[] width, StringBuilder sb) {
+    private void makeLines(List<String[]> lines, int[] align, int[] width, StringBuilder sb) {
         for (String[] line : lines) {
             for (int i = 0; i < line.length; i++)
                 appendFormatted(sb, line[i], align[i], width[i]);
@@ -121,13 +121,10 @@ public class ShoppingCart
         }
     }
 
-    private void makeSeparator(List<String[]> lines, int lineLength, StringBuilder sb) {
-        if (lines.size() > 0) {
-
-            for (int i = 0; i < lineLength; i++)
-                sb.append("-");
-            sb.append("\n");
-        }
+    private void makeSeparator(int lineLength, StringBuilder sb) {
+        for (int i = 0; i < lineLength; i++)
+            sb.append("-");
+        sb.append("\n");
     }
 
     private String makeFooterAndFinish(int[] align, String[] footer, int[] width, StringBuilder sb) {
