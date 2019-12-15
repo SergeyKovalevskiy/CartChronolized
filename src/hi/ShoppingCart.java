@@ -6,7 +6,7 @@ import java.text.*;
  */
 public class ShoppingCart
 {
-    public enum ItemType { NEW, REGULAR, SECOND_FREE, SALE };
+    public enum Type { NEW, REGULAR, SECOND_FREE, SALE };
     /**
      * Tests all class methods.
      */
@@ -14,10 +14,10 @@ public class ShoppingCart
     {
 // TODO: add tests here
         ShoppingCart cart = new ShoppingCart();
-        cart.addItem("Apple", 0.99, 5, ItemType.NEW);
-        cart.addItem("Banana", 20.00, 4, ItemType.SECOND_FREE);
-        cart.addItem("A long piece of toilet paper", 17.20, 1, ItemType.SALE);
-        cart.addItem("Nails", 2.00, 500, ItemType.REGULAR);
+        cart.addItem("Apple", 0.99, 5, Type.NEW);
+        cart.addItem("Banana", 20.00, 4, Type.SECOND_FREE);
+        cart.addItem("A long piece of toilet paper", 17.20, 1, Type.SALE);
+        cart.addItem("Nails", 2.00, 500, Type.REGULAR);
         System.out.println(cart.formatTicket());
     }
     /**
@@ -30,7 +30,7 @@ public class ShoppingCart
      *
      * @throws IllegalArgumentException if some value is wrong
      */
-    public void addItem(String title, double price, int quantity, ItemType type)
+    public void addItem(String title, double price, int quantity, Type type)
     {
         if (title == null || title.length() == 0 || title.length() > 32)
             throw new IllegalArgumentException("Illegal title");
@@ -161,7 +161,7 @@ public class ShoppingCart
      * For each full 10 not NEW items item gets additional 1% discount,
      * but not more than 80% total
      */
-    public static int calculateDiscount(ItemType type, int quantity)
+    public static int calculateDiscount(Type type, int quantity)
     {
         int discount = 0;
         switch (type) {
@@ -191,7 +191,7 @@ public class ShoppingCart
         private String title;
         private double price;
         private int quantity;
-        private ItemType type;
+        private Type type;
 
         public String getTitle() {
             return title;
@@ -217,11 +217,11 @@ public class ShoppingCart
             this.quantity = quantity;
         }
 
-        public ItemType getType() {
+        public Type getType() {
             return type;
         }
 
-        public void setType(ItemType type) {
+        public void setType(Type type) {
             this.type = type;
         }
     }
