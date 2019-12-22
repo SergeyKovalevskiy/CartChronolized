@@ -1,4 +1,5 @@
 package hi;
+
 import java.util.*;
 import java.text.*;
 /**
@@ -6,18 +7,19 @@ import java.text.*;
  */
 public class ShoppingCart
 {
-    public enum Type { NEW, REGULAR, SECOND_FREE, SALE };
+    public static enum ItemType { NEW, REGULAR, SECOND_FREE, SALE };
     /**
      * Tests all class methods.
      */
     public static void main(String[] args)
     {
+// TODO: add tests here
         ShoppingCart cart = new ShoppingCart();
-        cart.addItem("Apple", 0.99, 5, Type.NEW);
-        cart.addItem("Banana", 20.00, 4, Type.SECOND_FREE);
-        cart.addItem("A long piece of toilet paper", 17.20, 1, Type.SALE);
-        cart.addItem("Nails", 2.00, 500, Type.REGULAR);
-        System.out.println(cart.formTicket());
+        cart.addItem("Apple", 0.99, 5, ItemType.NEW);
+        cart.addItem("Banana", 20.00, 4, ItemType.SECOND_FREE);
+        cart.addItem("A long piece of toilet paper", 17.20, 1, ItemType.SALE);
+        cart.addItem("Nails", 2.00, 500, ItemType.REGULAR);
+        System.out.println(cart.formatTicket());
     }
     /**
      * Adds new item.
@@ -29,7 +31,7 @@ public class ShoppingCart
      *
      * @throws IllegalArgumentException if some value is wrong
      */
-    public void addItem(String title, double price, int quantity, Type type)
+    public void addItem(String title, double price, int quantity, ItemType type)
     {
         if (title == null || title.length() == 0 || title.length() > 32)
             throw new IllegalArgumentException("Illegal title");
@@ -37,7 +39,11 @@ public class ShoppingCart
             throw new IllegalArgumentException("Illegal price");
         if (quantity <= 0)
             throw new IllegalArgumentException("Illegal quantity");
-        Item item = new Item(title,price,quantity,type);
+        Item item = new Item();
+        item.title = title;
+        item.price = price;
+        item.quantity = quantity;
+        item.type = type;
         items.add(item);
     }
     /**
@@ -56,25 +62,25 @@ public class ShoppingCart
      *
      * if no items in cart returns "No items." string.
      */
-    public String formTicket()
+    public String formatTicket()
     {
         if (items.size() == 0)
             return "No items.";
         List<String[]> lines = new ArrayList<String[]>();
         String[] header = {"#","Item","Price","Quan.","Discount","Total"};
         int[] align = new int[] { 1, -1, 1, 1, 1, 1 };
+// formatting each line
         double total = 0.00;
         int index = 0;
-        // formatting each line
         for (Item item : items) {
-            int discount = calculateDiscount(item.getType(), item.getQuantity());
-            double itemTotal = item.getPrice() * item.getQuantity() * (100.00 - discount) / 100.00;
+            int discount = calculateDiscount(item.type, item.quantity);
+            double itemTotal = item.price * item.quantity * (100.00 - discount) / 100.00;
             lines.add(new String[]{
                     String.valueOf(++index),
-                    item.getTitle(),
-                    MONEY.format(item.getPrice()),
-                    String.valueOf(item.getQuantity()),
-                    printDiscount(discount),
+                    item.title,
+                    MONEY.format(item.price),
+                    String.valueOf(item.quantity),
+                    (discount == 0) ? "-" : (String.valueOf(discount) + "%"),
                     MONEY.format(itemTotal)
             });
             total += itemTotal;
@@ -84,11 +90,13 @@ public class ShoppingCart
 // formatting table
 // column max length
         int[] width = new int[]{0,0,0,0,0,0};
-        for (String[] line : lines) {
-            adjustWidth(width, line);
-        }
-        adjustWidth(width, header);
-        adjustWidth(width, footer);
+        for (String[] line : lines)
+            for (int i = 0; i < line.length; i++)
+                width[i] = (int) Math.max(width[i], line[i].length());
+        for (int i = 0; i < header.length; i++)
+            width[i] = (int) Math.max(width[i], header[i].length());
+        for (int i = 0; i < footer.length; i++)
+            width[i] = (int) Math.max(width[i], footer[i].length());
 // line length
         int lineLength = width.length - 1;
         for (int w : width)
@@ -98,45 +106,27 @@ public class ShoppingCart
         for (int i = 0; i < header.length; i++)
             appendFormatted(sb, header[i], align[i], width[i]);
         sb.append("\n");
-        makeSeparator(lineLength, sb);
-        makeLines(lines, align, width, sb);
-// ending separator
-        if (lines.size() > 0) {
-            makeSeparator(lineLength, sb);
-        }
-// footer
-        return makeFooterAndFinish(align, footer, width, sb);
-    }
-
-    private String printDiscount(int discount) {
-        return (discount == 0) ? "-" : (String.valueOf(discount) + "%");
-    }
-
-    private void adjustWidth(int[] width, String[] line) {
-        for (int i = 0; i < line.length; i++)
-            width[i] = (int) Math.max(width[i], line[i].length());
-    }
-
-    private void makeLines(List<String[]> lines, int[] align, int[] width, StringBuilder sb) {
+// separator
+        for (int i = 0; i < lineLength; i++)
+            sb.append("-");
+        sb.append("\n");
+// lines
         for (String[] line : lines) {
             for (int i = 0; i < line.length; i++)
                 appendFormatted(sb, line[i], align[i], width[i]);
             sb.append("\n");
         }
-    }
-
-    private void makeSeparator(int lineLength, StringBuilder sb) {
-        for (int i = 0; i < lineLength; i++)
-            sb.append("-");
-        sb.append("\n");
-    }
-
-    private String makeFooterAndFinish(int[] align, String[] footer, int[] width, StringBuilder sb) {
+        if (lines.size() > 0) {
+// separator
+            for (int i = 0; i < lineLength; i++)
+                sb.append("-");
+            sb.append("\n");
+        }
+// footer
         for (int i = 0; i < footer.length; i++)
             appendFormatted(sb, footer[i], align[i], width[i]);
         return sb.toString();
     }
-
     // --- private section -----------------------------------------------------
     private static final NumberFormat MONEY;
     static {
@@ -152,7 +142,7 @@ public class ShoppingCart
     public static void appendFormatted(StringBuilder sb, String value, int align, int width)
     {
         if (value.length() > width)
-            value = value.substring(0,width-1);
+            value = value.substring(0,width);
         int before = (align == 0)
                 ? (width - value.length()) / 2
                 : (align == -1) ? 0 : width - value.length();
@@ -172,7 +162,7 @@ public class ShoppingCart
      * For each full 10 not NEW items item gets additional 1% discount,
      * but not more than 80% total
      */
-    public static int calculateDiscount(Type type, int quantity)
+    public static int calculateDiscount(ItemType type, int quantity)
     {
         int discount = 0;
         switch (type) {
@@ -196,7 +186,14 @@ public class ShoppingCart
         }
         return discount;
     }
-
+    /** item info */
+    private static class Item
+    {
+        String title;
+        double price;
+        int quantity;
+        ItemType type;
+    }
     /** Container for added items */
     private List<Item> items = new ArrayList<Item>();
 }
