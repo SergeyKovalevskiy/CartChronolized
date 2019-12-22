@@ -8,11 +8,11 @@ public class AppendFormattedTest {
     @Test
     public void trim(){
         StringBuilder sb=new StringBuilder("a");
-        String extra = "a";
+        String extra = " a ";
         appendFormatted(sb,extra,-1,1);
-        assertEquals("aa ", sb.toString());
+        assertEquals("a  ", sb.toString());
         appendFormatted(sb,extra,-1,1);
-        assertEquals("aa a ", sb.toString());
+        assertEquals("a    ", sb.toString());
     }
 
     @Test
@@ -31,6 +31,5 @@ public class AppendFormattedTest {
         appendFormatted(sb,extra,1,2);
         assertEquals(" a ", sb.toString());
     }
-
 
 }

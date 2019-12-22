@@ -12,7 +12,6 @@ public class ShoppingCart
      */
     public static void main(String[] args)
     {
-// TODO: add tests here
         ShoppingCart cart = new ShoppingCart();
         cart.addItem("Apple", 0.99, 5, Type.NEW);
         cart.addItem("Banana", 20.00, 4, Type.SECOND_FREE);
@@ -99,9 +98,7 @@ public class ShoppingCart
         for (int i = 0; i < header.length; i++)
             appendFormatted(sb, header[i], align[i], width[i]);
         sb.append("\n");
-// separator
         makeSeparator(lineLength, sb);
-// lines
         makeLines(lines, align, width, sb);
 // ending separator
         if (lines.size() > 0) {

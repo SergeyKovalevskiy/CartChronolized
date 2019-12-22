@@ -1,7 +1,6 @@
 package hi;
 import org.junit.Test;
 
-import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.*;
 import org.junit.runners.*;

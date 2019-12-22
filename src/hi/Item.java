@@ -8,8 +8,6 @@ class Item
     private int quantity;
     private ShoppingCart.Type type;
 
-    public Item() {
-    }
     public Item(String title, double price, int quantity, ShoppingCart.Type type) {
     this.title=title;
     this.price=price;
